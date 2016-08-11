@@ -20,6 +20,7 @@ if (!accessToken) {
     return;
 }
 
+alert(accessToken);
 // We got an access token. We can now request the user queue.
 $.ajax({
   url: "https://api.nightbot.tv/1/me",
