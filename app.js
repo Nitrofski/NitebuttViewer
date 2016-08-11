@@ -5,6 +5,9 @@ function url(key) {
   return match && decodeURIComponent(match[1].replace(/\+/g, " "));
 }
 
+alert(window.location);
+alert(window.location.search);
+
 // Redirect the user if the access token has not been provided.
 var accessToken = url("access_token");
 if (!accessToken) {
