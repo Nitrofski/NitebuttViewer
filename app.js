@@ -6,20 +6,16 @@ function url(key) {
   return match && decodeURIComponent(match[1].replace(/\+/g, " "));
 }
 
+ACCESS_TOKEN_COOKIE_NAME = "access_token";
+
 // Redirect the user if the access token has not been provided.
-var accessToken = url("access_token");
+var accessToken = Cookies.get(ACCESS_TOKEN_COOKIE_NAME) || url("access_token");
 if (!accessToken) {
-  var clientId ="336d223b29d038e6dca4c03d24b4ab93";
-  var redirectUri = location.protocol + '//' + location.host + location.pathname;
-  var responseType = "token";
-  var scope = "song_requests_queue";
-  window.location.replace("https://api.nightbot.tv/oauth2/authorize"
-    + "?client_id=" + clientId
-    + "&redirect_uri=" + redirectUri
-    + "&response_type=" + responseType
-    + "&scope=" + scope);
+  authorize();
 } else {
   // We got an access token. We can now request the user queue.
+  Cookies.set(ACCESS_TOKEN_COOKIE_NAME, accessToken, { expires: 30 });  // 30 days period
+  
   $.ajax({
     url: "https://api.nightbot.tv/1/me",
     type: "GET",
@@ -27,6 +23,11 @@ if (!accessToken) {
     success: function (data) {
       var channelName = data.user.displayName;
       $('#req_url').text("beta.nightbot.tv/t/" + channelName + "/song_requests");
+      update(); // Kick off the update loop.
+    },
+    error: function() {
+      Cookies.remove(ACCESS_TOKEN_COOKIE_NAME);
+      authorize();
     }
   });
 
@@ -37,9 +38,20 @@ if (!accessToken) {
       type: "GET",
       headers: { Authorization: "Bearer " + accessToken },
       success: function(data) { $songRequest.text(data._currentSong.track.title + " – Requested by " + data._currentSong.user.displayName); },
-      complete: function() { setTimeout(update, 3000); } // Schedule next call
+      error: function() { $songRequest.text("Could not retrieve Current Song."); },
+      complete: function() { setTimeout(update, 3000); } // Schedule next update
     });
   }
+}
 
-  update();
+function authorize() {
+  var clientId ="336d223b29d038e6dca4c03d24b4ab93";
+  var redirectUri = location.protocol + '//' + location.host + location.pathname;
+  var responseType = "token";
+  var scope = "song_requests_queue";
+  window.location.replace("https://api.nightbot.tv/oauth2/authorize"
+    + "?client_id=" + clientId
+    + "&redirect_uri=" + redirectUri
+    + "&response_type=" + responseType
+    + "&scope=" + scope);
 }
