@@ -9,7 +9,7 @@ function url(key) {
 ACCESS_TOKEN_COOKIE_NAME = "access_token";
 
 // Redirect the user if the access token has not been provided.
-var accessToken = Cookies.get(ACCESS_TOKEN_COOKIE_NAME) || url("access_token");
+var accessToken = url("access_token") || Cookies.get(ACCESS_TOKEN_COOKIE_NAME);
 if (!accessToken) {
   authorize();
 } else {
