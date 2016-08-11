@@ -17,6 +17,7 @@ if (!accessToken) {
     + "&redirect_uri=" + redirectUri
     + "&response_type=" + responseType
     + "&scope=" + scope);
+    return;
 }
 
 // We got an access token. We can now request the user queue.
