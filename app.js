@@ -8,7 +8,6 @@ function url(key) {
 
 // Redirect the user if the access token has not been provided.
 var accessToken = url("access_token");
-alert(accessToken);
 if (!accessToken) {
   var clientId ="336d223b29d038e6dca4c03d24b4ab93";
   var redirectUri = location.protocol + '//' + location.host + location.pathname;
@@ -37,7 +36,7 @@ if (!accessToken) {
       url: "https://api.nightbot.tv/1/song_requests/queue",
       type: "GET",
       headers: { Authorization: "Bearer " + accessToken },
-      success: function(data) { alert(data); },
+      success: function(data) { $songRequest.text(data._current.track.title " – Requested by " data._current.user.displayName); },
       complete: function() { setTimeout(update, 3000); } // Schedule next call
     });
   }
