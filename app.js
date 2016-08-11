@@ -5,11 +5,9 @@ function url(key) {
   return match && decodeURIComponent(match[1].replace(/\+/g, " "));
 }
 
-alert(window.location);
-alert(window.location.search);
-
 // Redirect the user if the access token has not been provided.
 var accessToken = url("access_token");
+alert(accessToken);
 if (!accessToken) {
   var clientId ="336d223b29d038e6dca4c03d24b4ab93";
   var redirectUri = location.protocol + '//' + location.host + location.pathname;
