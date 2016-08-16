@@ -42,6 +42,8 @@ if (!accessToken) {
           $songRequest.text(data._currentSong.track.title + " – Requested by " + data._currentSong.user.displayName);
         } else if (data.queue && data.queue[0]) {
           $songRequest.text(data.queue[0].track.title + " - Requested by " + data.queue[0].user.displayName);
+        } else {
+          $songRequest.text("Could not retrieve Current Song.");
         }
       },
       error: function() { $songRequest.text("Could not retrieve Current Song."); },
