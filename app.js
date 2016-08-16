@@ -37,7 +37,13 @@ if (!accessToken) {
       url: "https://api.nightbot.tv/1/song_requests/queue",
       type: "GET",
       headers: { Authorization: "Bearer " + accessToken },
-      success: function(data) { $songRequest.text(data._currentSong.track.title + " – Requested by " + data._currentSong.user.displayName); },
+      success: function(data) {
+        if (data._currentSong) {
+          $songRequest.text(data._currentSong.track.title + " – Requested by " + data._currentSong.user.displayName);
+        } else if (data.queue && data.queue[0]) {
+          $songRequest.text(data.queue[0].track.title + " - Requested by " + data.queue[0].user.displayName);
+        }
+      },
       error: function() { $songRequest.text("Could not retrieve Current Song."); },
       complete: function() { setTimeout(update, 3000); } // Schedule next update
     });
