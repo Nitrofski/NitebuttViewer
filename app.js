@@ -22,7 +22,7 @@ if (!accessToken) {
     headers: { Authorization: "Bearer " + accessToken },
     success: function (data) {
       var channelName = data.user.displayName;
-      $('#req_url').text("beta.nightbot.tv/t/" + channelName + "/song_requests");
+      $('#req_url').text("nightbot.tv/t/" + channelName + "/song_requests");
       update(); // Kick off the update loop.
     },
     error: function() {
