@@ -30,7 +30,7 @@ if (!accessToken) {
       authorize();
     }
   });
-
+  
   var $songRequest = $('#song_request');
   function update() {
     $.ajax({
@@ -39,9 +39,9 @@ if (!accessToken) {
       headers: { Authorization: "Bearer " + accessToken },
       success: function(data) {
         if (data._currentSong) {
-          $songRequest.text(data._currentSong.track.title + " – Requested by " + data._currentSong.user.displayName);
+          $songRequest.text(data._currentSong.track.title + " &mdash; Requested by " + data._currentSong.user.displayName);
         } else if (data.queue && data.queue[0]) {
-          $songRequest.text(data.queue[0].track.title + " - Requested by " + data.queue[0].user.displayName);
+          $songRequest.text(data.queue[0].track.title + " &mdash; Requested by " + data.queue[0].user.displayName);
         } else {
           $songRequest.text("Could not retrieve Current Song.");
         }
